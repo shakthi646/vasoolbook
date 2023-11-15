@@ -1,0 +1,80 @@
+<!-- res/layout/fragment_create_contact.xml -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/surface"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/size_20dp"
+        android:layout_margin="@dimen/size_10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/title_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/surfaceDark"
+            android:orientation="horizontal">
+
+            <com.ksp.vasool.views.RobotoMediumTextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:padding="@dimen/size_7dp"
+                android:text="S.No"
+                android:background="@drawable/rounded_outline"
+                android:textColor="@color/primary_textColor"
+                android:textSize="@dimen/text_size_16sp" />
+
+            <com.ksp.vasool.views.RobotoMediumTextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:background="@drawable/rounded_outline"
+                android:padding="@dimen/size_7dp"
+                android:text="Date"
+                android:textColor="@color/primary_textColor"
+                android:textSize="@dimen/text_size_16sp" />
+
+            <com.ksp.vasool.views.RobotoMediumTextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:background="@drawable/rounded_outline"
+                android:padding="@dimen/size_7dp"
+                android:text="EMI"
+                android:textColor="@color/primary_textColor"
+                android:textSize="@dimen/text_size_16sp" />
+
+            <com.ksp.vasool.views.RobotoMediumTextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:background="@drawable/rounded_outline"
+                android:padding="@dimen/size_7dp"
+                android:text="Total Repaid"
+                android:textColor="@color/primary_textColor"
+                android:textSize="@dimen/text_size_16sp" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/instalment_list_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:paddingBottom="100dp"
+            tools:listitem="@layout/item_installment"
+            tools:visibility="visible" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,66 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.ksp.vasool.views.RobotoMediumTextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:text="Installment Date :"
+            android:textColor="@color/primary_textColor"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/size_10dp"
+            android:layout_marginEnd="@dimen/size_10dp"
+            android:padding="@dimen/size_12dp" />
+
+        <com.ksp.vasool.views.RobotoRegularTextView
+            android:layout_weight="1"
+            android:id="@+id/tvEmiDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="EMI Date"
+            android:clickable="true"
+            android:focusable="true"
+            android:drawableTint="@color/secondary_textColor"
+            android:drawablePadding="@dimen/size_10dp"
+            android:drawableStart="@drawable/ic_date"
+            android:layout_marginEnd="@dimen/size_10dp"
+            android:background="@drawable/rounded_outline"
+            android:padding="@dimen/size_12dp" />
+
+    </LinearLayout>
+
+    <!-- Installment Amount -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutInstallmentAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10dp"
+        style="@style/textInputBox"
+        android:hint="Installment Amount">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextInstallmentAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Add EMI Button -->
+    <Button
+        android:id="@+id/buttonAddEmi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add EMI"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp" />
+
+</LinearLayout>

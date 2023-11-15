@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/dashboardFragment">
+
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.ksp.vasool.ui.dashboard.view.DashboardFragment"
+        android:label="fragment_dashboard"
+        tools:layout="@layout/fragment_dashboard" >
+
+        <action
+            android:id="@+id/action_dashboard_to_dailyCollectionFragment"
+            app:destination="@id/dailyCollectionFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/dailyCollectionFragment"
+        android:name="com.ksp.vasool.ui.daily.view.CollectionBaseFragment"
+        android:label="fragment_dailyCollection"
+        tools:layout="@layout/fragment_daily_collection" >
+
+        <argument
+            android:name="lineId"
+            android:defaultValue="0"
+            app:argType="string" />
+
+        <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            android:id="@+id/action_daily_to_addContact"
+            app:destination="@id/addContactFragment" />
+
+        <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            android:id="@+id/action_daily_to_contactDetails"
+            app:destination="@id/contactDetailsFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/weeklyCollectionFragment"
+        android:name="com.ksp.vasool.ui.weekly.view.WeeklyCollectionFragment"
+        android:label="fragment_dailyCollection"
+        tools:layout="@layout/fragment_weekly_collection" />
+
+    <fragment
+        android:id="@+id/addContactFragment"
+        android:name="com.ksp.vasool.ui.contact.view.AddContactFragment"
+        android:label="fragment_add_contact"
+        tools:layout="@layout/fragment_add_contact" >
+
+        <argument
+            android:name="lineId"
+            android:defaultValue="0"
+            app:argType="string" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/contactDetailsFragment"
+        android:name="com.ksp.vasool.ui.contact.view.ContactDetailsFragment"
+        android:label="fragment_contact_details"
+        tools:layout="@layout/fragment_contact_details" >
+
+        <argument
+            android:name="contactId"
+            android:defaultValue="0"
+            app:argType="string" />
+
+        <argument
+            android:name="lineId"
+            android:defaultValue="0"
+            app:argType="string" />
+
+        <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            android:id="@+id/action_contactDetails_to_add_loan_fragment"
+            app:destination="@id/addLoanFragment" />
+
+        <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            android:id="@+id/action_contactDetails_to_closed_loan_list_fragment"
+            app:destination="@id/closedLoanListFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/addLoanFragment"
+        android:name="com.ksp.vasool.ui.loan.view.AddLoanFragment"
+        android:label="fragment_add_loan"
+        tools:layout="@layout/fragment_add_loan" >
+
+        <argument
+            android:name="contactId"
+            android:defaultValue="0"
+            app:argType="string" />
+
+        <argument
+            android:name="lineId"
+            android:defaultValue="0"
+            app:argType="string" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/closedLoanListFragment"
+        android:name="com.ksp.vasool.ui.loan.view.ClosedLoanListFragment"
+        android:label="closed_loan_list_fragment"
+        tools:layout="@layout/closed_loan_list_fragment" >
+
+        <argument
+            android:name="contactDetails"
+            app:argType="com.ksp.vasool.ui.contact.model.Contact" />
+
+    </fragment>
+
+</navigation>

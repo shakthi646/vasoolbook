@@ -1,0 +1,50 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal">
+
+    <com.ksp.vasool.views.RobotoRegularTextView
+        android:id="@+id/s_no"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        tools:text="1"
+        android:background="@drawable/rounded_outline"
+        android:padding="@dimen/size_7dp"
+        android:textSize="@dimen/text_size_14sp"/>
+
+    <com.ksp.vasool.views.RobotoRegularTextView
+        android:id="@+id/emiDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        tools:text="22/11/2023"
+        android:singleLine="true"
+        android:background="@drawable/rounded_outline"
+        android:padding="@dimen/size_7dp"
+        android:textSize="@dimen/text_size_14sp"/>
+
+    <com.ksp.vasool.views.RobotoRegularTextView
+        android:id="@+id/emiAmount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        tools:text="1200"
+        android:singleLine="true"
+        android:background="@drawable/rounded_outline"
+        android:padding="@dimen/size_7dp"
+        android:textSize="@dimen/text_size_14sp"/>
+
+    <com.ksp.vasool.views.RobotoRegularTextView
+        android:id="@+id/repaidAmount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        tools:text="4200"
+        android:singleLine="true"
+        android:background="@drawable/rounded_outline"
+        android:padding="@dimen/size_7dp"
+        android:textSize="@dimen/text_size_14sp"/>
+
+</LinearLayout>

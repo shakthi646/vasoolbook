@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.ksp.vasool.views.CustomViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible">
+
+        <com.google.android.material.tabs.TabLayout
+            android:layout_width="match_parent"
+            app:tabBackground="@drawable/dashboard_tab_selector"
+            app:tabGravity="center"
+            android:layout_gravity="bottom"
+            android:background="@color/backgroundColor"
+            android:id="@+id/dashboard_tab_indicator"
+            app:tabIndicatorHeight="0dp"
+            app:tabPaddingStart="7dp"
+            app:tabPaddingEnd="7dp"
+            android:layout_height="wrap_content"/>
+
+    </com.ksp.vasool.views.CustomViewPager>
+
+</LinearLayout>

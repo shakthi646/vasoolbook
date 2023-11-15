@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/surface"
+    tools:context=".ui.dashboard.view.DashboardFragment">
+    
+    <LinearLayout
+        android:id="@+id/header_layout"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:elevation="4dp"
+        android:weightSum="10"
+        android:layout_height="?attr/actionBarSize">
+
+        <com.ksp.vasool.views.RobotoMediumTextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_weight="9"
+            android:gravity="center"
+            android:textSize="@dimen/text_size_17sp"
+            android:text="Organization Name"
+            android:textColor="@color/textColorPrimary"
+            android:layout_height="match_parent"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            app:srcCompat="@drawable/ic_settings"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_below="@+id/header_layout"
+        android:id="@+id/org_name_bar_divider"
+        android:background="@color/divider_color"
+        android:layout_height="1dp"/>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:orientation="vertical"
+        android:id="@+id/root_layout"
+        android:layout_below="@+id/org_name_bar_divider"
+        android:background="@color/backgroundColor"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:paddingBottom="@dimen/size_100dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/size_10dp"
+                    android:id="@+id/dashboard_cards_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_400dp">
+
+                    <include
+                        android:id="@+id/dashboard_cards"
+                        layout="@layout/dashboard_cards_layout" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.ksp.vasool.views.RobotoMediumTextView
+                        android:id="@+id/quick_link_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/size_5dp"
+                        android:text="Quick Actions"
+                        android:paddingHorizontal="@dimen/size_20dp"
+                        android:textColor="@color/textColorPrimary"
+                        android:textSize="@dimen/text_size_19sp"
+                        app:layout_constraintTop_toTopOf="parent"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@+id/dashboard_quick_actions_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+<!--                    <include layout="@layout/dashboard_double_button_layout" />-->
+<!--                    <include layout="@layout/dashboard_double_button_layout" />-->
+<!--                    <include layout="@layout/dashboard_single_button_layout" />-->
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/addNewLineFab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            tools:visibility="visible"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/fab_btn_color"
+            android:text="Add New Collection"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:icon="@drawable/ic_plus_icon"
+            app:iconTint="@color/white" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</RelativeLayout>

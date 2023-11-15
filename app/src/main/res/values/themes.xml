@@ -1,0 +1,54 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Vasool" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+    </style>
+
+    <style name="Theme.Vasool" parent="Base.Theme.Vasool" />
+
+    <style name="AppTheme" parent="Base.Theme.Vasool">
+        <item name="android:statusBarColor">@color/surfaceDark</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="textInputBox" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="colorAccent">#fff</item>
+        <item name="boxStrokeColor">@color/blue_theme_color</item>
+
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">@color/primary_textColor</item>
+        <item name="android:textColorSecondary">@color/secondary_textColor</item>
+    </style>
+
+    <style name="DashboardButtonCard">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:clickable">true</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">5dp</item>
+        <item name="android:layout_marginEnd">5dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:shadowColor">@color/red</item>
+    </style>
+
+    <!-- Primary Button Style -->
+    <style name="PrimaryButtonStyle">
+        <item name="android:background">@drawable/primary_button_background</item>
+        <!-- Add any other styling attributes for primary buttons -->
+    </style>
+
+    <!-- Secondary Button Style -->
+    <style name="SecondaryButtonStyle">
+        <item name="android:background">@drawable/secondary_button_background</item>
+        <!-- Add any other styling attributes for secondary buttons -->
+    </style>
+
+    <style name="CustomDialogStyle" parent="Theme.AppCompat.DayNight.Dialog">
+        <item name="android:windowMinWidthMajor">90%</item> <!-- Set your desired width, e.g., 90% of screen width -->
+        <item name="android:windowMinWidthMinor">90%</item> <!-- Match the major width for consistency -->
+    </style>
+
+</resources>
