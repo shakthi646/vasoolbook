@@ -2,4 +2,12 @@
     <string name="app_name">Vasool</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello Dashboard fragment</string>
+    <string name="account_details">Account Details</string>
+    <string name="privacy_security">Privacy &amp; Security</string>
+    <string name="send_feedback">Send Feedback</string>
+    <string name="share_to_your_friends">Share to your friends</string>
+    <string name="rate_app">Rate App</string>
+    <string name="app_support_email">developer.nativeapps@gmail.com</string>
+    <string name="feedback_subject_from">Vasool Android App Feedback From %1$s</string>
+    <string name="short_description">VasoolBook app is your simple and easy-to-use dail, weekly loan management.</string>
 </resources>

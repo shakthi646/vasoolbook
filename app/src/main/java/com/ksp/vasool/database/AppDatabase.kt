@@ -24,7 +24,7 @@ import com.ksp.vasool.ui.loan.model.Loan
     Contact::class,
     Loan::class,
     Installment::class,
-    Line::class] , version = 9, exportSchema = false)
+    Line::class] , version = 1, exportSchema = false)
 @TypeConverters(DateConverter::class, InstallmentListConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun contactDao():ContactDao

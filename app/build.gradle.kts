@@ -14,8 +14,8 @@ android {
         applicationId = "com.ksp.vasool"
         minSdk = 25
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 3
+        versionName = "1.0.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -49,6 +49,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.9.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("com.google.android.gms:play-services-oss-licenses:17.0.1")
 
     val nav_version = "2.7.0"
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")

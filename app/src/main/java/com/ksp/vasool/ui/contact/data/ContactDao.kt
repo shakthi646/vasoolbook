@@ -25,13 +25,21 @@ interface ContactDao {
     @Query("SELECT * FROM contacts where line_id=:lineId")
     suspend fun getAllContacts(lineId: String): List<Contact>
 
+    @Query("DELETE from contacts where contact_id=:contactId")
+    suspend fun deleteContact(contactId : String)
+
     @Query("SELECT * FROM contacts where contact_id=:contactId")
     suspend fun getContactDetails(contactId : String) : Contact
 
+    @Query("SELECT contact_name FROM contacts where contact_id=:contactId")
+    suspend fun getContactName(contactId : String) : String
     @Query("SELECT * FROM contacts")
     fun getAllContactsPaging():PagingSource<Int, Contact>
 
     @Query("SELECT * FROM contacts where line_id=:lineId")
     fun getAllContactsPaging(lineId : String):PagingSource<Int, Contact>
+
+    @Query("SELECT * FROM contacts WHERE line_id = :lineId AND contact_name LIKE '%' || :filterString || '%'")
+    fun getAllContactsPaging(lineId: String, filterString: String): PagingSource<Int, Contact>
 
 }

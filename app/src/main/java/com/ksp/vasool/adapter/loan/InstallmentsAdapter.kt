@@ -14,7 +14,8 @@ import com.ksp.vasool.util.VasoolUtil
  * Created by sathya-6501 on 23/08/23.
  */
 class InstallmentsAdapter(private val installments: List<Installment>,
-                          private val onItemClick: (Installment) -> Unit) : RecyclerView.Adapter<InstallmentsAdapter.ViewHolder>() {
+                          private val onItemClick: (Installment) -> Unit,
+                          private val onItemLongClick: (Installment) -> Boolean ) : RecyclerView.Adapter<InstallmentsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent:ViewGroup , viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -26,6 +27,10 @@ class InstallmentsAdapter(private val installments: List<Installment>,
         val installment = installments[position]
         holder.itemView.setOnClickListener {
             onItemClick(installment)
+        }
+
+        holder.itemView.setOnLongClickListener {
+            onItemLongClick(installment)
         }
 
         holder.bind(installment, position)

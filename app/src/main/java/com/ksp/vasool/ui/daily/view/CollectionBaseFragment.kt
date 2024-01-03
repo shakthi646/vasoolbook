@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -15,19 +16,24 @@ import androidx.paging.PagingData
 import androidx.paging.filter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ksp.vasool.MainNavigationActivity
+import com.ksp.vasool.R
 import com.ksp.vasool.adapter.ContactListAdapter
 import com.ksp.vasool.common.CustomDividerItemDecoration
 import com.ksp.vasool.databinding.FragmentDailyCollectionBinding
 import com.ksp.vasool.ui.collection.viewmodel.CollectionViewModel
 import com.ksp.vasool.ui.contact.viewmodel.ContactViewModel
+import com.ksp.vasool.ui.loan.model.Installment
 import com.ksp.vasool.ui.loan.viewmodel.LoanViewModel
 import com.ksp.vasool.util.VasoolUtil
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.util.Calendar
 
 class CollectionBaseFragment : Fragment() {
 
     private lateinit var mBinding:FragmentDailyCollectionBinding
-    private lateinit var contactViewModel :ContactViewModel
+    lateinit var contactViewModel :ContactViewModel
     private lateinit var loanViewModel : LoanViewModel
     private lateinit var collectionViewModel: CollectionViewModel
 
@@ -41,6 +47,7 @@ class CollectionBaseFragment : Fragment() {
         lineId = args.lineId
         initializeVM()
         loanViewModel.setLineId(lineId)
+        contactViewModel.setLineId(lineId)
     }
 
     override fun onCreateView(inflater:LayoutInflater , container:ViewGroup? , savedInstanceState:Bundle?):View? {
@@ -54,7 +61,7 @@ class CollectionBaseFragment : Fragment() {
 
         setupOnClickListeners()
         updateUI()
-        contactViewModel.getList(lineId)
+//        contactViewModel.getList()
         setUpRecyclerView()
     }
 
@@ -85,7 +92,7 @@ class CollectionBaseFragment : Fragment() {
     private fun setupOnClickListeners()
     {
         mBinding.addContactFaf.setOnClickListener {
-            val action = CollectionBaseFragmentDirections.actionDailyToAddContact(lineId)
+            val action = CollectionBaseFragmentDirections.actionDailyToAddContact(lineId = lineId)
             findNavController().navigate(action)
         }
 
@@ -101,6 +108,7 @@ class CollectionBaseFragment : Fragment() {
             mBinding.topBarCustomMenu.visibility = View.VISIBLE
             mBinding.searchLayout.visibility = View.GONE
             mBinding.searchInputTv.setText("")
+            contactViewModel.setFilter("")
         }
 
         mBinding.searchInputTv.addTextChangedListener(object : TextWatcher {
@@ -117,6 +125,31 @@ class CollectionBaseFragment : Fragment() {
                 searchContact(newText)
             }
         })
+
+        mBinding.todayLoanCard.setOnClickListener {
+            getTodayEmiList()
+        }
+    }
+
+    private fun getTodayEmiList() {
+
+        val calendar = Calendar.getInstance()
+        val date = VasoolUtil.getDateString(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(
+            Calendar.DAY_OF_MONTH))
+        lifecycleScope.launch(Dispatchers.IO) {
+            val installmentList = loanViewModel.getTodayPaidInstallmentList(date, lineId)
+
+            withContext(Dispatchers.Main)
+            {
+                installmentList?.let { showTodayInstallments(it) }
+            }
+        }
+    }
+
+    private fun showTodayInstallments(installmentList: List<Installment>) {
+        val bottomSheetDialogFragment = InstallmentListBottomSheet(installmentList)
+        bottomSheetDialogFragment.setStyle(DialogFragment.STYLE_NORMAL , R.style.CustomBottomSheetDialog)
+        bottomSheetDialogFragment.show(childFragmentManager, bottomSheetDialogFragment.tag)
     }
 
     private fun initializeVM() {
@@ -146,14 +179,7 @@ class CollectionBaseFragment : Fragment() {
 
     fun searchContact(currentQuery : String)
     {
-        val pagingData = contactViewModel.mContactListLD.value
-        val filteredData = pagingData?.filter { contact ->
-            contact.contactName?.contains(currentQuery, ignoreCase = true) == true ||
-                    contact.phoneNumber?.contains(currentQuery) == true
-        }
-        if (filteredData != null) {
-            contactListAdapter.submitData(lifecycle, filteredData)
-        }
+       contactViewModel.setFilter(currentQuery)
     }
 
 

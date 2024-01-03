@@ -2,6 +2,10 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Vasool" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <!-- Add more color references as needed -->
     </style>
 
     <style name="Theme.Vasool" parent="Base.Theme.Vasool" />
@@ -10,6 +14,7 @@
         <item name="android:statusBarColor">@color/surfaceDark</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
+
 
     <style name="textInputBox" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
         <item name="colorAccent">#fff</item>
@@ -46,9 +51,28 @@
         <!-- Add any other styling attributes for secondary buttons -->
     </style>
 
-    <style name="CustomDialogStyle" parent="Theme.AppCompat.DayNight.Dialog">
+    <style name="CustomDialogStyle" parent="Theme.Material3.DayNight.Dialog">
+        <item name="colorAccent">@color/textColorPrimary</item>
         <item name="android:windowMinWidthMajor">90%</item> <!-- Set your desired width, e.g., 90% of screen width -->
         <item name="android:windowMinWidthMinor">90%</item> <!-- Match the major width for consistency -->
+    </style>
+
+    <style name="CustomShapeAppearanceBottomSheetDialog" parent="@style/ShapeAppearanceOverlay.MaterialComponents.BottomSheet">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">16dp</item>
+        <item name="cornerSizeTopLeft">16dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
+
+    <style name="CustomBottomSheet" parent="Widget.MaterialComponents.BottomSheet">
+        <item name="android:background">@color/backgroundColor</item>
+        <item name="shapeAppearance">@style/CustomShapeAppearanceBottomSheetDialog</item>
+    </style>
+
+    <style name="CustomBottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/CustomBottomSheet</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
 
 </resources>

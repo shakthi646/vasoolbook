@@ -27,11 +27,20 @@ class ContactRepository(private val contactDao: ContactDao) {
         return contactDao.getContactDetails(contactId)
     }
 
+    suspend fun getContactName(contactId: String) :String
+    {
+        return contactDao.getContactName(contactId)
+    }
+
+    suspend fun deleteContact(contactId: String) {
+        return contactDao.deleteContact(contactId)
+    }
+
     fun getAllContactsPaging(): PagingSource<Int, Contact> {
         return contactDao.getAllContactsPaging()
     }
 
-    fun getAllContactsPaging(lineId : String): PagingSource<Int, Contact> {
-        return contactDao.getAllContactsPaging(lineId)
+    fun getAllContactsPaging(lineId : String, currentFilter : String): PagingSource<Int, Contact> {
+        return contactDao.getAllContactsPaging(lineId, currentFilter)
     }
 }

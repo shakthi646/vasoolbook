@@ -48,10 +48,19 @@ class LoanRepository(private val loanDao:LoanDao)
         return loanDao.getClosedLoanList(contactId)
     }
 
+    suspend fun deleteLoan(loanId: String) : Int
+    {
+        return loanDao.deleteLoan(loanId)
+    }
 
     suspend fun insertInstallment(installment: Installment)
     {
         return loanDao.insertInstallment(installment)
+    }
+
+    suspend fun deleteInstallment(installment: Installment)
+    {
+        return loanDao.deleteInstallment(installment)
     }
 
     suspend fun updateInstallment(installment: Installment)
@@ -72,5 +81,10 @@ class LoanRepository(private val loanDao:LoanDao)
     fun observeTotalTodayInstallmentsAmount(date : String, lineId : String) : LiveData<Int>
     {
         return loanDao.observeTotalTodayInstallmentsAmount(date, lineId)
+    }
+
+    fun getTodayPaidInstallments(date : String, lineId : String) : List<Installment>
+    {
+        return loanDao.getTodayPaidInstallmentsList(date, lineId)
     }
 }

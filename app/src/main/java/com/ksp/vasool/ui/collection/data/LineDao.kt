@@ -34,4 +34,7 @@ interface LineDao
 
     @Query("SELECT * FROM line where line_id=:lineId")
     suspend fun getLineDetails(lineId : String): Line
+
+    @Query("DELETE FROM line where line_id=:lineId")
+    suspend fun deleteLine(lineId :String)
 }

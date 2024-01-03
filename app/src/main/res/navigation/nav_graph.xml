@@ -6,14 +6,58 @@
     app:startDestination="@id/dashboardFragment">
 
     <fragment
+        android:id="@+id/companyDetailsFragment"
+        android:name="com.ksp.vasool.ui.accounts.CompanyDetailsFragment"
+        android:label="fragment_company_details"
+        tools:layout="@layout/fragment_company_details" >
+
+        <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_companyDetails_to_dashboard"
+            app:destination="@id/dashboardFragment" />
+
+    </fragment>
+
+    <fragment
         android:id="@+id/dashboardFragment"
         android:name="com.ksp.vasool.ui.dashboard.view.DashboardFragment"
         android:label="fragment_dashboard"
         tools:layout="@layout/fragment_dashboard" >
 
         <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             android:id="@+id/action_dashboard_to_dailyCollectionFragment"
             app:destination="@id/dailyCollectionFragment" />
+
+        <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_dashboard_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.ksp.vasool.ui.settings.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" >
+
+        <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_settings_to_companyDetails"
+            app:destination="@id/companyDetailsFragment" />
 
     </fragment>
 
@@ -31,12 +75,16 @@
         <action
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             android:id="@+id/action_daily_to_addContact"
             app:destination="@id/addContactFragment" />
 
         <action
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             android:id="@+id/action_daily_to_contactDetails"
             app:destination="@id/contactDetailsFragment" />
 
@@ -53,6 +101,11 @@
         android:name="com.ksp.vasool.ui.contact.view.AddContactFragment"
         android:label="fragment_add_contact"
         tools:layout="@layout/fragment_add_contact" >
+
+        <argument
+            android:name="contactId"
+            android:defaultValue="0"
+            app:argType="string" />
 
         <argument
             android:name="lineId"
@@ -80,12 +133,24 @@
         <action
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_contactDetails_to_edit_contact_fragment"
+            app:destination="@id/addContactFragment" />
+
+        <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             android:id="@+id/action_contactDetails_to_add_loan_fragment"
             app:destination="@id/addLoanFragment" />
 
         <action
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             android:id="@+id/action_contactDetails_to_closed_loan_list_fragment"
             app:destination="@id/closedLoanListFragment" />
 

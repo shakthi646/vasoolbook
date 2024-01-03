@@ -9,9 +9,12 @@
 
     <color name="primaryColor">#2979FF</color>
     <color name="primaryDarkColor">#1942CD</color>
+    <color name="colorAccent">#387CF6</color>
     <color name="accentVariant">#1942CD</color>
     <color name="textColorPrimary">#181833</color>
     <color name="backgroundColor">#f2f5f8</color>
+    <color name="secondaryTextColorInverse">#EAE9E9</color>
+    <color name="textColorInverse">#ffffff</color>
 
     <!--Surface Colors-->
     <color name="surface">#f2f5f8</color>

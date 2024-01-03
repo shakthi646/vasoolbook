@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/settings_header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="Settings" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_below="@+id/settings_header_layout"
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider_color" />
+
+    <ScrollView
+        android:layout_below="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp">
+
+                <LinearLayout
+                    android:id="@+id/organization_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:paddingHorizontal="@dimen/size_5dp"
+                        android:paddingVertical="@dimen/size_12dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="@dimen/size_30dp"
+                            android:layout_height="@dimen/size_30dp"
+                            android:padding="@dimen/size_5dp"
+                            app:srcCompat="@drawable/ic_org"/>
+
+                        <com.ksp.vasool.views.RobotoRegularTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/org_profile_label"
+                            android:gravity="center_vertical"
+                            android:paddingTop="@dimen/size_3dp"
+                            android:layout_marginStart="@dimen/size_10dp"
+                            android:text="@string/account_details"
+                            android:textColor="@color/primary_textColor"
+                            android:textSize="@dimen/text_size_16sp"
+                            tools:targetApi="lollipop" />
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/divider_color" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/privacy_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:paddingHorizontal="@dimen/size_5dp"
+                        android:paddingVertical="@dimen/size_12dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="@dimen/size_30dp"
+                            android:layout_height="@dimen/size_30dp"
+                            android:padding="@dimen/size_5dp"
+                            app:srcCompat="@drawable/ic_privacy"/>
+
+                        <com.ksp.vasool.views.RobotoRegularTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:layout_marginStart="@dimen/size_10dp"
+                            android:text="@string/privacy_security"
+                            android:textColor="@color/primary_textColor"
+                            android:textSize="@dimen/text_size_16sp"
+                            tools:targetApi="lollipop" />
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/divider_color" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/feedback_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:paddingHorizontal="@dimen/size_5dp"
+                        android:paddingVertical="@dimen/size_12dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="@dimen/size_30dp"
+                            android:layout_height="@dimen/size_30dp"
+                            android:padding="@dimen/size_5dp"
+                            app:srcCompat="@drawable/ic_feedback"/>
+
+                        <com.ksp.vasool.views.RobotoRegularTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:paddingTop="@dimen/size_3dp"
+                            android:layout_marginStart="@dimen/size_10dp"
+                            android:text="@string/send_feedback"
+                            android:textColor="@color/primary_textColor"
+                            android:textSize="@dimen/text_size_16sp"
+                            tools:targetApi="lollipop" />
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/divider_color" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/share_app_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:paddingHorizontal="@dimen/size_5dp"
+                        android:paddingVertical="@dimen/size_12dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="@dimen/size_30dp"
+                            android:layout_height="@dimen/size_30dp"
+                            android:padding="@dimen/size_5dp"
+                            app:srcCompat="@drawable/ic_share"/>
+
+                        <com.ksp.vasool.views.RobotoRegularTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:paddingTop="@dimen/size_3dp"
+                            android:layout_marginStart="@dimen/size_10dp"
+                            android:text="@string/share_to_your_friends"
+                            android:textColor="@color/primary_textColor"
+                            android:textSize="@dimen/text_size_16sp"
+                            tools:targetApi="lollipop" />
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/divider_color" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/rate_us_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:paddingHorizontal="@dimen/size_5dp"
+                        android:paddingVertical="@dimen/size_12dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="@dimen/size_30dp"
+                            android:layout_height="@dimen/size_30dp"
+                            android:padding="@dimen/size_5dp"
+                            app:srcCompat="@drawable/ic_rate_us"/>
+
+                        <com.ksp.vasool.views.RobotoRegularTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:paddingTop="@dimen/size_3dp"
+                            android:layout_marginStart="@dimen/size_10dp"
+                            android:text="@string/rate_app"
+                            android:textColor="@color/primary_textColor"
+                            android:textSize="@dimen/text_size_16sp"
+                            tools:targetApi="lollipop" />
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/divider_color" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/app_version_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:paddingHorizontal="@dimen/size_5dp"
+                        android:paddingVertical="@dimen/size_12dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="@dimen/size_30dp"
+                            android:layout_height="@dimen/size_30dp"
+                            android:padding="@dimen/size_5dp"
+                            app:srcCompat="@drawable/ic_app_version"/>
+
+                        <com.ksp.vasool.views.RobotoRegularTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:layout_marginStart="@dimen/size_10dp"
+                            android:text="App Version"
+                            android:textColor="@color/primary_textColor"
+                            android:textSize="@dimen/text_size_16sp"
+                            tools:targetApi="lollipop" />
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/divider_color" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

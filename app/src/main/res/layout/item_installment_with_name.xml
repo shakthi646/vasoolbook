@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:padding="@dimen/size_10dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.ksp.vasool.views.RobotoRegularTextView
+            android:id="@+id/name"
+            android:text="praveen"
+            android:layout_weight="1"
+            android:padding="@dimen/size_10dp"
+            android:textColor="@color/primary_textColor"
+            android:textSize="@dimen/text_size_15sp"
+            android:layout_width="@dimen/size_0dp"
+            android:layout_height="wrap_content"/>
+
+        <com.ksp.vasool.views.RobotoMediumTextView
+            android:id="@+id/amount"
+            android:text="Rs.3000"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:padding="@dimen/size_10dp"
+            android:textColor="@color/primary_textColor"
+            android:textSize="@dimen/text_size_15sp"
+            android:layout_width="@dimen/size_0dp"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <View
+        android:background="@color/divider_color"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_1dp"/>
+
+</LinearLayout>

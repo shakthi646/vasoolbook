@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -25,11 +26,15 @@ class AddContactFragment : Fragment() {
 
     private val args: AddContactFragmentArgs by navArgs()
     private var mLineId : String? = null
+    private var mContactId : String? =  null
+
+    private var contactDetails : Contact? = null
 
     override fun onCreate(savedInstanceState:Bundle?) {
         super.onCreate(savedInstanceState)
 
         args.lineId.let { mLineId = it }
+        args.contactId.let { mContactId = it }
     }
 
     override fun onCreateView(inflater:LayoutInflater , container:ViewGroup? , savedInstanceState:Bundle?):View? {
@@ -51,6 +56,23 @@ class AddContactFragment : Fragment() {
         initializeVM()
         setUpOnClickListeners()
 
+        getInitialData()
+
+    }
+
+    private fun getInitialData() {
+
+        mContactId?.let { contactViewModel.getContactDetails(it) }
+
+        contactViewModel.contactDetailsLD.observe(viewLifecycleOwner, Observer {
+
+            if(it!= null)
+            {
+                contactDetails = it
+                mBinding.etName.setText(it.contactName)
+                mBinding.etPhoneNumber.setText(it.phoneNumber)
+            }
+        })
     }
 
     private fun setUpOnClickListeners() {
@@ -89,16 +111,28 @@ class AddContactFragment : Fragment() {
         val address = mBinding.etAddress.text.toString()
 
         val timeInMillis = System.currentTimeMillis()
-        val localContact = Contact().apply {
-            this.contactName = name[0].uppercaseChar() + name.substring(1)
-            this.phoneNumber = phoneNumber
-            this.address = address
-            this.lineId = mLineId
 
-            if(this.contactId == null) // its for only create case
-            {
-                this.createdTime = timeInMillis
-                this.contactId = StringConstants.contactIDPrefix+timeInMillis
+        var localContact = if(contactDetails!= null)
+        {
+            contactDetails!!.apply {
+                this.contactName = name[0].uppercaseChar() + name.substring(1)
+                this.phoneNumber = phoneNumber
+                this.address = address
+            }
+        }
+        else
+        {
+            Contact().apply {
+                this.contactName = name[0].uppercaseChar() + name.substring(1)
+                this.phoneNumber = phoneNumber
+                this.address = address
+                this.lineId = mLineId
+
+                if(this.contactId == null) // its for only create case
+                {
+                    this.createdTime = timeInMillis
+                    this.contactId = StringConstants.contactIDPrefix+timeInMillis
+                }
             }
         }
 

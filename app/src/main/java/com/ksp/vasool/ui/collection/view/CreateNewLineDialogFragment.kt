@@ -17,6 +17,7 @@ import com.ksp.vasool.ui.collection.viewmodel.CollectionViewModel
 /**
  * Created by sathya-6501 on 07/11/23.
  */
+
 class CreateNewLineDialogFragment(private val collectionViewModel: CollectionViewModel) : DialogFragment()
 {
     private lateinit var binding: CreateNewLineDialogBinding

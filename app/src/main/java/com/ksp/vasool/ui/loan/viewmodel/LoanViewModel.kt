@@ -100,6 +100,24 @@ class LoanViewModel(private val repository:LoanRepository) : ViewModel() {
         }
     }
 
+    fun deleteInstallmentAndUpdateLoan(installment: Installment)
+    {
+        viewModelScope.launch {
+
+            val loanDetails: Loan? = installment.loanId?.let { repository.getLoanDetails(it) }
+            loanDetails?.apply {
+                loanRepaidAmount = loanRepaidAmount?.minus(installment.installmentAmount!!)
+                loanBalanceAmount = loanBalanceAmount?.plus(installment.installmentAmount!!)
+                installmentsCount = installmentsCount?.minus(1)
+
+            }
+
+            repository.deleteInstallment(installment)
+
+            loanDetails?.let { repository.updateLoan(it) }
+        }
+    }
+
     fun updateInstallment(installment: Installment)
     {
         viewModelScope.launch {
@@ -111,8 +129,17 @@ class LoanViewModel(private val repository:LoanRepository) : ViewModel() {
         return repository.getInstallmentsList(loanId)
     }
 
+    suspend fun getTodayPaidInstallmentList(date : String, loanId: String) : List<Installment> {
+        return repository.getTodayPaidInstallments(date, loanId)
+    }
+
     suspend fun getClosedLoanList(contactId: String) : List<Loan>?
     {
         return repository.getClosedLoanList(contactId)
+    }
+
+    suspend fun deleteLoan(loanId: String) : Int
+    {
+        return repository.deleteLoan(loanId)
     }
 }

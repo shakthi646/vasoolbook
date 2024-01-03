@@ -10,4 +10,6 @@ object StringConstants
     const val contactIDPrefix = "con_"
     const val loanIDPrefix = "loan_"
     const val lineIdPrefix = "line_"
+    const val app_url = "https://play.google.com/store/apps/details?id=com.ksp.vasool"
+    const val app_uri = "market://details?id=com.ksp.vasool"
 }

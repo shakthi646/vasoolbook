@@ -16,6 +16,7 @@ import kotlinx.coroutines.withContext
 
 class CollectionViewModel(private val collectionRepository:CollectionRepository) : ViewModel()
 {
+
     val allLines: LiveData<List<Line>> = collectionRepository.allLines
 
     suspend fun getAllLines() : List<Line>
@@ -36,6 +37,13 @@ class CollectionViewModel(private val collectionRepository:CollectionRepository)
     {
         return withContext(Dispatchers.IO) {
             collectionRepository.getLineDetails(lineId)
+        }
+    }
+
+    suspend fun deleteLine(lineId : String)
+    {
+        return withContext(Dispatchers.IO) {
+            collectionRepository.deleteLine(lineId)
         }
     }
 }

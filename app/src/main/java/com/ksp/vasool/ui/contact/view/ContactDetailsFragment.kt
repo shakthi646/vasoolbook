@@ -1,6 +1,6 @@
 package com.ksp.vasool.ui.contact.view
 
-import android.R
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -9,15 +9,13 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ksp.vasool.MainNavigationActivity
+import com.ksp.vasool.R
 import com.ksp.vasool.adapter.loan.InstallmentsAdapter
 import com.ksp.vasool.base.BaseFragment
 import com.ksp.vasool.common.CustomDividerItemDecoration
@@ -25,6 +23,7 @@ import com.ksp.vasool.databinding.FragmentContactDetailsBinding
 import com.ksp.vasool.ui.collection.viewmodel.CollectionViewModel
 import com.ksp.vasool.ui.contact.model.Contact
 import com.ksp.vasool.ui.contact.viewmodel.ContactViewModel
+import com.ksp.vasool.ui.dashboard.view.DashboardFragmentDirections
 import com.ksp.vasool.ui.loan.model.Installment
 import com.ksp.vasool.ui.loan.model.Loan
 import com.ksp.vasool.ui.loan.view.InstallmentBottomSheetFragment
@@ -61,51 +60,79 @@ class ContactDetailsFragment : BaseFragment() {
         return mBinding.root
     }
 
-
-
     override fun onViewCreated(view:View , savedInstanceState:Bundle?) {
         super.onViewCreated(view , savedInstanceState)
 
         setupOnClickListeners()
         getContactDetails()
         setUpObservers()
-        setUpActionMenu()
 
+        setHasOptionsMenu(true)
     }
 
-    private fun setUpActionMenu()
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.contact_details_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.edit_contact -> {
+
+                openEditContactScreen()
+                return true
+            }
+
+            R.id.delete_contact -> {
+                deleteContactDialog()
+                return true
+            }
+
+            // Add more cases for other menu items if needed
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun openEditContactScreen()
     {
-//        val menuHost: MenuHost = requireActivity()
-//
-//        menuHost.addMenuProvider(object : MenuProvider {
-//            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-//                menuInflater.inflate(R.menu.example_menu, menu)
-//            }
-//
-//            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-//                // Handle the menu selection
-//                return when (menuItem.itemId) {
-//                    R.id.menu_clear -> {
-//                        // clearCompletedTasks()
-//                        true
-//                    }
-//                    else -> false
-//                }
-//            }
-//        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+        val action = ContactDetailsFragmentDirections.actionContactDetailsToEditContactFragment(mContactId, contactDetails?.lineId?:"")
+        findNavController().navigate(action)
+    }
+
+    private fun deleteContactDialog()
+    {
+        val builder = AlertDialog.Builder(requireContext())
+
+        builder.setTitle("Delete Contact")
+        builder.setMessage("Are you sure, you want to delete this Contact?")
+
+        builder.setPositiveButton("Yes") { dialog, which ->
+            lifecycleScope.launch(Dispatchers.IO) {
+                contactViewModel.deleteContact(mContactId)
+
+                withContext(Dispatchers.Main)
+                {
+                    findNavController().popBackStack()
+                }
+            }
+        }
+
+        builder.setNegativeButton("No") { dialog, which ->
+            dialog.dismiss()
+        }
+
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
     }
 
     private fun setUpObservers()
     {
         lifecycleScope.launch{
 
-            val hasActiveLoan = loanViewModel.hasActiveLoan(mContactId)
+            val loanId = loanViewModel.getActiveLoanId(mContactId)
 
-            if(hasActiveLoan)
+            if(!loanId.isNullOrBlank())
             {
-                mBinding.emptyView.visibility = View.GONE
-                val loanId = loanViewModel.getActiveLoanId(mContactId)
-
                 withContext(Dispatchers.Main)
                 {
                     loanViewModel.getLoanLiveData(loanId).observe(viewLifecycleOwner, Observer {
@@ -118,6 +145,7 @@ class ContactDetailsFragment : BaseFragment() {
             }
             else
             {
+                mBinding.addLoanFaf.text = "Add Loan"
                 mBinding.emptyView.visibility = View.VISIBLE
             }
         }
@@ -155,7 +183,10 @@ class ContactDetailsFragment : BaseFragment() {
         mBinding.totalRepaidAmountValue.text = VasoolUtil.formatToIndianRupees(loanDetails.loanRepaidAmount)
         mBinding.balanceAmountValue.text = VasoolUtil.formatToIndianRupees(loanDetails.loanBalanceAmount)
         mBinding.loanStartDateValue.text = VasoolUtil.convertDateFormat(loanDetails.startDate!!)
-        mBinding.loanEndDateValue.text = loanDetails.endDate?:"-"
+        mBinding.loanEndDateValue.text = "-"
+        loanDetails.endDate?.let {
+            mBinding.loanEndDateValue.text = VasoolUtil.convertDateFormat(it)
+        }
         mBinding.paidDaysValue.text = loanDetails.installmentsCount.toString()
         mBinding.emiAmountValue.text = VasoolUtil.formatToIndianRupees(loanDetails.loanEmiAmount)
         mBinding.interestRateValue.text = loanDetails.loanInterestRate.toString()
@@ -167,9 +198,16 @@ class ContactDetailsFragment : BaseFragment() {
 
     private fun updateInstallmentsRecyclerView(installmentsList: List<Installment>)
     {
-        val installmentsAdapter = InstallmentsAdapter(installmentsList){
-            Toast.makeText(requireContext(), it.installmentAmount.toString(), Toast.LENGTH_LONG).show()
-        }
+        val installmentsAdapter = InstallmentsAdapter(installmentsList,
+            onItemClick = { selectedInstallment ->
+                // Handle item click
+            },
+            onItemLongClick = { selectedInstallment ->
+
+                showDeleteInstallmentAlertDialog(selectedInstallment)
+                true // Return true if the long click is consumed, false otherwise
+            }
+        )
 
         mBinding.instalmentListRecycler.apply{
             layoutManager = (LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false))
@@ -190,6 +228,58 @@ class ContactDetailsFragment : BaseFragment() {
         mBinding.closedLoansBtn.setOnClickListener {
             openClosedLoansListFragment()
         }
+
+        mBinding.emptyStateClosedLoansBtn.setOnClickListener {
+            openClosedLoansListFragment()
+        }
+
+        mBinding.deleteLoan.setOnClickListener {
+
+            showDeleteLoanAlertDialog()
+        }
+    }
+
+    private fun showDeleteInstallmentAlertDialog(selectedInstallment : Installment) {
+        val builder = AlertDialog.Builder(requireContext())
+
+        builder.setTitle("Delete Installment")
+        builder.setMessage("Are you sure, you want to delete this Installment?")
+
+        builder.setPositiveButton("OK") { dialog, which ->
+            lifecycleScope.launch(Dispatchers.IO) {
+                loanViewModel.deleteInstallmentAndUpdateLoan(selectedInstallment)
+            }
+        }
+
+        builder.setNegativeButton("Cancel") { dialog, which ->
+            dialog.dismiss()
+        }
+
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+    }
+
+    private fun showDeleteLoanAlertDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+
+        builder.setTitle("Delete Loan")
+        builder.setMessage("Are you sure, you want to delete this loan. Once you delete all of your installments also deleted.")
+
+        builder.setPositiveButton("OK") { dialog, which ->
+            lifecycleScope.launch(Dispatchers.IO) {
+                loanViewModel.deleteLoan(activeLoanDetails?.loanId!!)
+                contactViewModel.updateContact(mContactId, 0)
+
+                setUpObservers()
+            }
+        }
+
+        builder.setNegativeButton("Cancel") { dialog, which ->
+            dialog.dismiss()
+        }
+
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
     }
 
     private fun openClosedLoansListFragment()

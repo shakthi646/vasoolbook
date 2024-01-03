@@ -28,6 +28,7 @@
             android:layout_height="match_parent"/>
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/settings"
             app:srcCompat="@drawable/ic_settings"
             android:layout_weight="1"
             android:padding="10dp"
@@ -67,7 +68,7 @@
                     android:layout_marginTop="@dimen/size_10dp"
                     android:id="@+id/dashboard_cards_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/size_400dp">
+                    android:layout_height="300dp">
 
                     <include
                         android:id="@+id/dashboard_cards"
@@ -122,5 +123,44 @@
             app:iconTint="@color/white" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:elevation="@dimen/size_15dp"
+        android:background="@color/card_bg"
+        android:orientation="vertical"
+        android:gravity="center"
+        tools:visibility="visible"
+        android:clickable="true"
+        android:focusable="true"
+        android:id="@+id/empty_view"
+        android:visibility="gone"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="@dimen/size_250dp"
+            app:srcCompat="@drawable/ic_loan_empty_state"
+            android:layout_height="@dimen/size_200dp" />
+
+        <com.ksp.vasool.views.RobotoRegularTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:lineSpacingExtra="@dimen/size_5dp"
+            android:textSize="@dimen/text_size_16sp"
+            android:padding="@dimen/size_15dp"
+            android:textColor="@color/textColorPrimary"
+            android:text="You don't have Line or Collection here."/>
+
+        <Button
+            android:id="@+id/empty_state_new_line_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:textColor="@color/deep_blue"
+            android:text="Create New Line/Collection"
+            style="?android:attr/borderlessButtonStyle" />
+
+    </LinearLayout>
 
 </RelativeLayout>

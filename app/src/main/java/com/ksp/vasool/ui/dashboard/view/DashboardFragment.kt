@@ -1,5 +1,7 @@
 package com.ksp.vasool.ui.dashboard.view
 
+import android.app.AlertDialog
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,16 +15,25 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.PagerAdapter
+import com.ksp.vasool.MainNavigationActivity
 import com.ksp.vasool.R
 import com.ksp.vasool.base.BaseViewModelFactory
+import com.ksp.vasool.constants.SessionVariable
 import com.ksp.vasool.database.AppDatabase
 import com.ksp.vasool.databinding.DashboardDoubleButtonLayoutBinding
 import com.ksp.vasool.databinding.DashboardSingleButtonLayoutBinding
 import com.ksp.vasool.databinding.FragmentDashboardBinding
+import com.ksp.vasool.ui.accounts.CompanyDetails
 import com.ksp.vasool.ui.collection.data.CollectionRepository
 import com.ksp.vasool.ui.collection.model.Line
 import com.ksp.vasool.ui.collection.view.CreateNewLineDialogFragment
 import com.ksp.vasool.ui.collection.viewmodel.CollectionViewModel
+import com.ksp.vasool.ui.loan.data.LoanRepository
+import com.ksp.vasool.ui.loan.model.Installment
+import com.ksp.vasool.ui.loan.viewmodel.LoanViewModel
+import com.ksp.vasool.util.sharedpreference.PreferenceUtil.getCompanyDetailsFromSP
+import com.ksp.vasool.util.sharedpreference.PreferenceUtil.getSharedPreference
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
@@ -30,12 +41,12 @@ class DashboardFragment : Fragment() {
 
     lateinit var mBinding : FragmentDashboardBinding
     private lateinit var collectionViewModel : CollectionViewModel
+
     private var buttonIconsArray = listOf<Int>(R.drawable.ic_button4,R.drawable.ic_button1, R.drawable.ic_button2,
     R.drawable.ic_button3)
 
     override fun onCreate(savedInstanceState:Bundle?) {
         super.onCreate(savedInstanceState)
-
         initializeVM()
     }
 
@@ -67,10 +78,12 @@ class DashboardFragment : Fragment() {
         }
     }
 
-    private fun initializeVM() {
+    private fun initializeVM()
+    {
         val collectionRepository = CollectionRepository(AppDatabase.getInstance(requireContext()).collectionDao())
         val collectionViewModelFactory = BaseViewModelFactory(collectionRepository)
         collectionViewModel = ViewModelProvider(this, collectionViewModelFactory)[CollectionViewModel::class.java]
+
     }
 
     override fun onCreateView(inflater:LayoutInflater , container:ViewGroup? , savedInstanceState:Bundle?):View? {
@@ -81,8 +94,14 @@ class DashboardFragment : Fragment() {
     override fun onViewCreated(view:View , savedInstanceState:Bundle?) {
         super.onViewCreated(view , savedInstanceState)
 
+        mBinding.title.text = SessionVariable.companyName
         setUpOnClickListeners()
         setUpObservers()
+        loadDashboardCards()
+    }
+
+    private fun loadDashboardCards() {
+
     }
 
     private fun loadQuickActions(lineList : List<Line>) {
@@ -103,6 +122,15 @@ class DashboardFragment : Fragment() {
                 binding.button.setOnClickListener {
                     openCollectionFragment(binding.button.tag as String)
                 }
+
+                binding.button.setOnLongClickListener {
+
+                    showDeleteCollectionDialog(binding.button.tag as String)
+
+                    true
+                }
+
+
                 mBinding.dashboardQuickActionsLayout.addView(binding.root)
             }
             else
@@ -115,6 +143,13 @@ class DashboardFragment : Fragment() {
                     openCollectionFragment(binding.button1.tag as String)
                 }
 
+                binding.button1.setOnLongClickListener {
+
+                    showDeleteCollectionDialog(binding.button1.tag as String)
+
+                    true
+                }
+
                 i++
 
                 binding.secondButtonName.text = lineList[i].lineName
@@ -124,10 +159,44 @@ class DashboardFragment : Fragment() {
                     openCollectionFragment(binding.button2.tag as String)
                 }
 
+                binding.button2.setOnLongClickListener {
+
+                    showDeleteCollectionDialog(binding.button2.tag as String)
+
+                    true
+                }
+
                 mBinding.dashboardQuickActionsLayout.addView(binding.root)
             }
 
             i++
+        }
+    }
+
+    private fun showDeleteCollectionDialog(id : String) {
+        val builder = AlertDialog.Builder(requireContext())
+
+        builder.setTitle("Delete Line")
+        builder.setMessage("Are you sure, you want to delete this Line?")
+
+        builder.setPositiveButton("OK") { dialog, which ->
+            lifecycleScope.launch(Dispatchers.IO) {
+                deleteCollection(id)
+            }
+        }
+
+        builder.setNegativeButton("Cancel") { dialog, which ->
+            dialog.dismiss()
+        }
+
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+    }
+
+    private fun deleteCollection(lineId: String) {
+
+        lifecycleScope.launch {
+            collectionViewModel.deleteLine(lineId)
         }
     }
 
@@ -141,6 +210,15 @@ class DashboardFragment : Fragment() {
     {
         mBinding.addNewLineFab.setOnClickListener {
             openNewLineWindow()
+        }
+
+        mBinding.emptyStateNewLineBtn.setOnClickListener {
+            openNewLineWindow()
+        }
+
+        mBinding.settings.setOnClickListener{
+            val action = DashboardFragmentDirections.actionDashboardToSettingsFragment()
+            findNavController().navigate(action)
         }
     }
 
@@ -158,6 +236,15 @@ class DashboardFragment : Fragment() {
             it?.let {
                 loadQuickActions(it)
                 initializeViewPager(it)
+            }
+
+            if(it.isNullOrEmpty())
+            {
+                mBinding.emptyView.visibility = View.VISIBLE
+            }
+            else
+            {
+                mBinding.emptyView.visibility = View.GONE
             }
         })
     }

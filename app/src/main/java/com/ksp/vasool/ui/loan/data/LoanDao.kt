@@ -39,7 +39,10 @@ interface LoanDao
     @Query("SELECT * FROM loans WHERE loan_id = :loanId")
     fun getLoanLiveData(loanId: String):LiveData<Loan>
 
-    @Query("SELECT SUM(loan_balance_amount) FROM loans where line_id=:lineId")
+    @Query("Delete FROM loans WHERE loan_id = :loanId")
+    fun deleteLoan(loanId: String): Int
+
+    @Query("SELECT SUM(loan_balance_amount) FROM loans where line_id=:lineId AND is_loan_active = 1")
     fun observeTotalBalanceAmount(lineId : String):LiveData<Int>
 
     @Query("SELECT * FROM loans WHERE contact_id = :contactId AND is_loan_active = 0")
@@ -60,4 +63,7 @@ interface LoanDao
 
     @Query("SELECT SUM(installment_amount) FROM Installment where line_id=:lineId AND installment_date=:date")
     fun observeTotalTodayInstallmentsAmount(date : String, lineId : String):LiveData<Int>
+    @Query("SELECT * FROM Installment WHERE line_id = :lineId AND installment_date=:date")
+    fun getTodayPaidInstallmentsList(date: String, lineId: String): List<Installment>
+
 }

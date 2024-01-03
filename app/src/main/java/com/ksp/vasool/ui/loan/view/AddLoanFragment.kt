@@ -28,6 +28,7 @@ class AddLoanFragment : BaseFragment() {
     private lateinit var loanViewModel: LoanViewModel
     private lateinit var mContactId : String
     private lateinit var mLineId : String
+    lateinit var calendar : Calendar
 
     private val args:AddLoanFragmentArgs by navArgs()
 
@@ -36,6 +37,7 @@ class AddLoanFragment : BaseFragment() {
         mContactId = args.contactId
         mLineId = args.lineId
 
+        calendar = Calendar.getInstance()
         setUpViewModel()
     }
 
@@ -59,11 +61,11 @@ class AddLoanFragment : BaseFragment() {
         mBinding.switchInterestDebited.setOnCheckedChangeListener { buttonView, isChecked ->
             if(isChecked)
             {
-                mBinding.etInterestAmount.setText("0")
+//                mBinding.givenAmountTV.setText("0")
             }
             else
             {
-                mBinding.etInterestAmount.setText("0")
+//                mBinding.givenAmountTV.setText("0")
             }
         }
 
@@ -106,7 +108,6 @@ class AddLoanFragment : BaseFragment() {
         val interestRate : Int = mBinding.etInterestAmount.text.toString().toInt()
         val installmentsCount : Int = mBinding.etInstallments.text.toString().toInt()
 
-        val calendar =  Calendar.getInstance()
         val currentDate = VasoolUtil.getDateString(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
         val startDateString = currentDate
         val endDateString = VasoolUtil.addDaysToDate(currentDate, if(mBinding.switchInterestDebited.isChecked) installmentsCount else 7*installmentsCount)
@@ -149,7 +150,6 @@ class AddLoanFragment : BaseFragment() {
 
     private fun setUpDatePicker()
     {
-        val calendar = loanViewModel.calendar
         val startDatePicker = DatePickerDialog(
             requireContext(),
             { _, year, monthOfYear, dayOfMonth ->
@@ -169,7 +169,7 @@ class AddLoanFragment : BaseFragment() {
     }
 
     private fun updateStartDateLabel() {
-        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
         mBinding.tvStartDate.text = dateFormat.format(loanViewModel.calendar.time)
     }
 

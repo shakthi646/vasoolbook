@@ -26,4 +26,9 @@ class CollectionRepository(private val lineDao: LineDao) {
     suspend fun getLineDetails(lineId : String): Line {
         return lineDao.getLineDetails(lineId)
     }
+
+    suspend fun deleteLine(lineId: String)
+    {
+        return lineDao.deleteLine(lineId)
+    }
 }

@@ -1,9 +1,11 @@
 <!-- res/layout/fragment_create_contact.xml -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/surface"
+    android:orientation="vertical">
 
 <!-- Toolbar -->
 <com.google.android.material.appbar.MaterialToolbar
@@ -12,12 +14,160 @@ android:orientation="vertical">
     android:layout_height="?attr/actionBarSize"
     app:title="Add Loan" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_below="@+id/header_layout"
+        android:id="@+id/org_name_bar_divider"
+        android:background="@color/divider_color"
+        android:layout_height="1dp"/>
+
 <!-- Content Container -->
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="@dimen/size_16dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidline1"
+            app:layout_constraintGuide_percent=".5"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:id="@+id/loan_amount_layout"
+            android:layout_marginEnd="@dimen/size_10dp"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/guidline1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <!-- Loan Amount -->
+            <TextView
+                android:textSize="@dimen/text_size_14sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Principal Amount"
+                android:layout_marginTop="@dimen/size_16dp"/>
+
+            <EditText
+                android:background="@drawable/rounded_outline"
+                android:id="@+id/etLoanAmount"
+                android:inputType="number"
+                android:textSize="@dimen/text_size_14sp"
+                android:paddingHorizontal="@dimen/size_10dp"
+                android:layout_marginTop="@dimen/size_10dp"
+                android:textColor="@color/textColorPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="47dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginStart="@dimen/size_10dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/guidline1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <!-- Loan Amount -->
+            <TextView
+                android:textSize="@dimen/text_size_14sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Date"
+                android:layout_marginTop="@dimen/size_16dp"/>
+
+            <com.ksp.vasool.views.RobotoRegularTextView
+                android:id="@+id/tvStartDate"
+                android:layout_width="match_parent"
+                android:layout_height="47dp"
+                android:hint="Start Date"
+                android:clickable="true"
+                android:focusable="true"
+                android:textSize="@dimen/text_size_14sp"
+                android:paddingStart="@dimen/size_15dp"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/size_10dp"
+                android:drawableTint="@color/secondary_textColor"
+                android:drawablePadding="@dimen/size_10dp"
+                android:drawableStart="@drawable/ic_date"
+                android:layout_marginEnd="@dimen/size_10dp"
+                android:background="@drawable/rounded_outline" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/loan_interest_layout"
+            android:layout_marginEnd="@dimen/size_10dp"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/loan_amount_layout"
+            app:layout_constraintEnd_toEndOf="@id/guidline1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <!-- Loan Amount -->
+            <TextView
+                android:textSize="@dimen/text_size_14sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Interest Rate (Amt. for 100)"
+                android:layout_marginTop="@dimen/size_16dp"/>
+
+            <EditText
+                android:background="@drawable/rounded_outline"
+                android:id="@+id/etInterestAmount"
+                android:inputType="number"
+                android:textSize="@dimen/text_size_14sp"
+                android:paddingHorizontal="@dimen/size_10dp"
+                android:layout_marginTop="@dimen/size_10dp"
+                android:textColor="@color/textColorPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="47dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginStart="@dimen/size_10dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/loan_amount_layout"
+            app:layout_constraintStart_toEndOf="@id/guidline1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <!-- Loan Amount -->
+            <TextView
+                android:textSize="@dimen/text_size_14sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Installments"
+                android:layout_marginTop="@dimen/size_16dp"/>
+
+            <EditText
+                android:background="@drawable/rounded_outline"
+                android:id="@+id/etInstallments"
+                android:inputType="number"
+                android:textSize="@dimen/text_size_14sp"
+                android:paddingHorizontal="@dimen/size_10dp"
+                android:layout_marginTop="@dimen/size_10dp"
+                android:textColor="@color/textColorPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="47dp"/>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Start Date Section -->
     <LinearLayout
@@ -26,20 +176,6 @@ android:orientation="vertical">
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.ksp.vasool.views.RobotoRegularTextView
-            android:layout_weight="1"
-            android:id="@+id/tvStartDate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="Start Date"
-            android:clickable="true"
-            android:focusable="true"
-            android:drawableTint="@color/secondary_textColor"
-            android:drawablePadding="@dimen/size_10dp"
-            android:drawableStart="@drawable/ic_date"
-            android:layout_marginEnd="@dimen/size_10dp"
-            android:background="@drawable/rounded_outline"
-            android:padding="@dimen/size_12dp" />
 
         <LinearLayout
             android:layout_weight="1"
@@ -64,68 +200,32 @@ android:orientation="vertical">
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+<!--    <LinearLayout-->
+<!--        android:background="@drawable/rounded_outline"-->
+<!--        android:padding="@dimen/size_10dp"-->
+<!--        android:layout_marginTop="@dimen/size_20dp"-->
+<!--        android:backgroundTint="@color/green"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:layout_height="wrap_content">-->
 
-        <!-- Loan Amount -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Loan Principal Amount"
-            android:layout_marginTop="@dimen/size_16dp"/>
+<!--        <com.ksp.vasool.views.RobotoRegularTextView-->
+<!--            android:text="Given Amount is : "-->
+<!--            android:textSize="@dimen/text_size_15sp"-->
+<!--            android:textColor="@color/textColorInverse"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"/>-->
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+<!--        <com.ksp.vasool.views.RobotoMediumTextView-->
+<!--            android:id="@+id/givenAmountTV"-->
+<!--            tools:text="Rs. 45000"-->
+<!--            android:textSize="@dimen/text_size_15sp"-->
+<!--            android:textColor="@color/textColorInverse"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"/>-->
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etLoanAmount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal" />
-        </com.google.android.material.textfield.TextInputLayout>
+<!--    </LinearLayout>-->
 
-        <!-- Interest Rate -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Loan Interest Rate (Amount for Rs.100)"
-            android:layout_marginTop="@dimen/size_16dp"/>
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etInterestAmount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- Installments -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Loan Installments"
-            android:layout_marginTop="@dimen/size_16dp"/>
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etInstallments"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number" />
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
 
     <!-- Add Loan Button -->
     <Button

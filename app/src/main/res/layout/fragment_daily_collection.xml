@@ -50,6 +50,7 @@
                     android:layout_width="@dimen/size_30dp"
                     android:layout_height="@dimen/size_30dp"
                     android:id="@+id/settings"
+                    android:visibility="gone"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="5dp"
                     app:srcCompat="@drawable/ic_settings"/>
@@ -156,6 +157,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="@dimen/size_15dp"
                     android:layout_marginBottom="@dimen/size_10dp"
+                    android:visibility="gone"
                     android:background="@drawable/default_circle"
                     android:clickable="true"
                     android:focusable="true"

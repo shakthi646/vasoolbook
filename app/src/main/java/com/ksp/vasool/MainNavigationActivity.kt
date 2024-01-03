@@ -3,11 +3,13 @@ package com.ksp.vasool
 import android.content.ActivityNotFoundException
 import android.content.ComponentName
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -15,12 +17,17 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ksp.vasool.base.BaseViewModelFactory
 import com.ksp.vasool.database.AppDatabase
 import com.ksp.vasool.databinding.ActivityMainBinding
+import com.ksp.vasool.ui.accounts.CompanyDetails
 import com.ksp.vasool.ui.collection.data.CollectionRepository
 import com.ksp.vasool.ui.collection.viewmodel.CollectionViewModel
 import com.ksp.vasool.ui.contact.data.ContactRepository
 import com.ksp.vasool.ui.contact.viewmodel.ContactViewModel
 import com.ksp.vasool.ui.loan.data.LoanRepository
 import com.ksp.vasool.ui.loan.viewmodel.LoanViewModel
+import com.ksp.vasool.util.sharedpreference.PreferenceUtil.getCompanyDetailsFromSP
+import com.ksp.vasool.util.sharedpreference.PreferenceUtil.getSharedPreference
+import com.ksp.vasool.util.sharedpreference.PreferenceUtil.isCompanyNameAvailable
+import kotlinx.coroutines.launch
 
 
 class MainNavigationActivity : AppCompatActivity() {
@@ -33,16 +40,18 @@ class MainNavigationActivity : AppCompatActivity() {
     private lateinit var loanViewModel:LoanViewModel
     private lateinit var collectionViewModel:CollectionViewModel
 
+    lateinit var companyDetails: CompanyDetails
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
 
+        companyDetails = this.getCompanyDetailsFromSP()
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         initializeVM()
         initializeNavigation()
-//        setUpNavigation()
 
         startActivity(intent)
 
@@ -64,9 +73,21 @@ class MainNavigationActivity : AppCompatActivity() {
 
 
     private fun initializeNavigation() {
+
         navController = findNavController(R.id.nav_host_fragment)
-//        bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_nav_view)
-//        bottomNavigationView.setupWithNavController(navController)
+
+        val startDestination = if(companyDetails.companyName.isNullOrBlank())
+        {
+            R.id.companyDetailsFragment
+        }
+        else
+        {
+            R.id.dashboardFragment
+        }
+
+        val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
+        navGraph.setStartDestination(startDestination)
+        navController.graph = navGraph
     }
 
     private fun initializeVM() {
@@ -100,7 +121,8 @@ class MainNavigationActivity : AppCompatActivity() {
         return collectionViewModel
     }
 
-//    private fun setUpNavigation() {
+    private fun setUpNavigation() {
+
 //        bottomNavigationView.setOnItemSelectedListener { menuItem ->
 //            when (menuItem.itemId) {
 //                R.id.navigation_home -> navController.navigate(R.id.dashboardFragment)
@@ -108,13 +130,13 @@ class MainNavigationActivity : AppCompatActivity() {
 //            }
 //            true
 //        }
-//    }
+    }
 
     override fun onBackPressed() {
 
         when(navController.currentDestination?.id)
         {
-            R.id.dashboardFragment, R.id.weeklyCollectionFragment ->
+            R.id.dashboardFragment ->
             {
                 this.finish()
             }
