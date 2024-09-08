@@ -1,18 +1,11 @@
 package com.ksp.vasool
 
-import android.content.ActivityNotFoundException
-import android.content.ComponentName
-import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ksp.vasool.base.BaseViewModelFactory
 import com.ksp.vasool.database.AppDatabase
@@ -25,9 +18,6 @@ import com.ksp.vasool.ui.contact.viewmodel.ContactViewModel
 import com.ksp.vasool.ui.loan.data.LoanRepository
 import com.ksp.vasool.ui.loan.viewmodel.LoanViewModel
 import com.ksp.vasool.util.sharedpreference.PreferenceUtil.getCompanyDetailsFromSP
-import com.ksp.vasool.util.sharedpreference.PreferenceUtil.getSharedPreference
-import com.ksp.vasool.util.sharedpreference.PreferenceUtil.isCompanyNameAvailable
-import kotlinx.coroutines.launch
 
 
 class MainNavigationActivity : AppCompatActivity() {
@@ -54,21 +44,6 @@ class MainNavigationActivity : AppCompatActivity() {
         initializeNavigation()
 
         startActivity(intent)
-
-//        navController.addOnDestinationChangedListener { _, destination, _ ->
-//
-//            when(destination.id)
-//            {
-//                R.id.dashboardFragment, R.id.dailyCollectionFragment, R.id.weeklyCollectionFragment ->
-//                {
-//                    bottomNavigationView.visibility = View.VISIBLE
-//                }
-//                else ->
-//                {
-//                    bottomNavigationView.visibility = View.GONE
-//                }
-//            }
-//        }
     }
 
 

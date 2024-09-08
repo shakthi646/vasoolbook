@@ -69,5 +69,6 @@
     <color name="secondary_button_bg">#607D8B</color>
     <color name="icon_bg">#eff6ff</color>
 
+    <color name="bg1">#889796</color>
 
 </resources>

@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Vasool"
 include(":app")
- 
+include(":mylibrary")
