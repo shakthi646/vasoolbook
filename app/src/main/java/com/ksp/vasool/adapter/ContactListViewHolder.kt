@@ -28,7 +28,7 @@ class ContactListViewHolder(private val binding : ContactListItemBinding, val co
     {
         binding.circularTextView.text = details.contactName?.first()?.toUpperCase().toString()
         binding.contactNameTV.text = details.contactName
-        binding.contactPhoneNumberTV.text = if(!TextUtils.isEmpty(details.phoneNumber)) details.phoneNumber else "No Phone Number"
+        binding.contactPhoneNumberTV.text = if(!TextUtils.isEmpty(details.address)) details.address else "No Address Found"
         binding.totalAmountTV.text = VasoolUtil.formatToIndianRupees(details.balanceAmount)
 
         (binding.circularTextView.background as GradientDrawable).setColor(ContextCompat.getColor(context ,
