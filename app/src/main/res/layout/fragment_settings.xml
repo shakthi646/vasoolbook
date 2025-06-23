@@ -176,6 +176,92 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/backup_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:paddingHorizontal="@dimen/size_5dp"
+                        android:paddingVertical="@dimen/size_12dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="@dimen/size_30dp"
+                            android:layout_height="@dimen/size_30dp"
+                            android:padding="@dimen/size_5dp"
+                            app:srcCompat="@drawable/ic_backup"/>
+
+                        <com.ksp.vasool.views.RobotoRegularTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:paddingTop="@dimen/size_3dp"
+                            android:layout_marginStart="@dimen/size_10dp"
+                            android:text="@string/backUp"
+                            android:textColor="@color/primary_textColor"
+                            android:textSize="@dimen/text_size_16sp"
+                            tools:targetApi="lollipop" />
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/divider_color" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/resture_backup_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:paddingHorizontal="@dimen/size_5dp"
+                        android:paddingVertical="@dimen/size_12dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="@dimen/size_30dp"
+                            android:layout_height="@dimen/size_30dp"
+                            android:padding="@dimen/size_5dp"
+                            app:srcCompat="@drawable/ic_restore"/>
+
+                        <com.ksp.vasool.views.RobotoRegularTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:paddingTop="@dimen/size_3dp"
+                            android:layout_marginStart="@dimen/size_10dp"
+                            android:text="@string/restore_backUp"
+                            android:textColor="@color/primary_textColor"
+                            android:textSize="@dimen/text_size_16sp"
+                            tools:targetApi="lollipop" />
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/divider_color" />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/share_app_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -284,6 +370,7 @@
                             app:srcCompat="@drawable/ic_app_version"/>
 
                         <com.ksp.vasool.views.RobotoRegularTextView
+                            android:id="@+id/app_version"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center_vertical"

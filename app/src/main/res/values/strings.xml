@@ -5,6 +5,8 @@
     <string name="account_details">Account Details</string>
     <string name="privacy_security">Privacy &amp; Security</string>
     <string name="send_feedback">Send Feedback</string>
+    <string name="backUp">BackUp</string>
+    <string name="restore_backUp">Restore BackUp</string>
     <string name="share_to_your_friends">Share to your friends</string>
     <string name="rate_app">Rate App</string>
     <string name="app_support_email">developer.nativeapps@gmail.com</string>

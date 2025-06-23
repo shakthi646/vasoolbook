@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ksp.vasool.MainNavigationActivity
 import com.ksp.vasool.R
 import com.ksp.vasool.adapter.ContactListAdapter
+import com.ksp.vasool.base.BaseFragment
 import com.ksp.vasool.common.CustomDividerItemDecoration
 import com.ksp.vasool.databinding.FragmentDailyCollectionBinding
 import com.ksp.vasool.ui.collection.viewmodel.CollectionViewModel
@@ -30,7 +31,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Calendar
 
-class CollectionBaseFragment : Fragment() {
+class CollectionBaseFragment : BaseFragment() {
 
     private lateinit var mBinding:FragmentDailyCollectionBinding
     lateinit var contactViewModel :ContactViewModel
