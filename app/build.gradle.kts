@@ -8,14 +8,14 @@ plugins {
 
 android {
     namespace = "com.ksp.vasool"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.ksp.vasool"
         minSdk = 25
-        targetSdk = 34
-        versionCode = 7
-        versionName = "1.0.6"
+        targetSdk = 36
+        versionCode = 10
+        versionName = "1.0.9"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -70,5 +70,7 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 //    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
+
+    implementation("androidx.biometric:biometric:1.2.0-alpha05")
 
 }

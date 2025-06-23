@@ -1,23 +1,40 @@
 package com.ksp.vasool.ui.settings
 
+import android.app.Activity
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.FileProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.room.Room
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import com.ksp.vasool.MainNavigationActivity
 import com.ksp.vasool.R
 import com.ksp.vasool.base.BaseFragment
 import com.ksp.vasool.constants.SessionVariable
 import com.ksp.vasool.constants.StringConstants
+import com.ksp.vasool.database.AppDatabase
 import com.ksp.vasool.databinding.FragmentSettingsBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
+import java.io.IOException
 
 /**
  * Created by sathya-6501 on 22/12/23.
@@ -25,8 +42,25 @@ import com.ksp.vasool.databinding.FragmentSettingsBinding
 class SettingsFragment : BaseFragment()
 {
     private lateinit var mBinding: FragmentSettingsBinding
+
+    private val pickBackupFileLauncher = registerForActivityResult(
+        ActivityResultContracts.OpenDocument()
+    ) { uri ->
+        if (uri != null) {
+            val restored = restoreDatabaseFromUri(requireContext(), uri)
+            if (restored) {
+                Toast.makeText(requireContext(), "Database restored! Restarting app...", Toast.LENGTH_SHORT).show()
+                restartApp(requireContext())
+            } else {
+                Toast.makeText(requireContext(), "Restore failed", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -64,6 +98,14 @@ class SettingsFragment : BaseFragment()
             sendFeedback()
         }
 
+        mBinding.backupLayout.setOnClickListener{
+            backupAndShareDatabase(requireContext())
+        }
+
+        mBinding.restureBackupLayout.setOnClickListener{
+            pickBackupFileLauncher.launch(arrayOf("*/*"))
+        }
+
         mBinding.shareAppLayout.setOnClickListener {
             shareApp()
         }
@@ -71,6 +113,207 @@ class SettingsFragment : BaseFragment()
         mBinding.rateUsLayout.setOnClickListener {
             rateUsClicked()
         }
+
+        mBinding.appVersion.text = "Version: ${requireActivity().packageManager.getPackageInfo(requireActivity().packageName, 0).versionName}"
+    }
+
+
+
+    fun backupAndShareDatabase(context: Context) {
+        try {
+            AppDatabase.closeDatabase()
+
+            val dbFile = context.getDatabasePath("Vasool.db")
+
+            val db = AppDatabase.getInstance(context)
+
+
+            lifecycleScope.launch {
+
+                val contactDao = db.collectionDao()
+                val allContacts = contactDao.getAllLine()
+                Log.d("Backup_data", "Contact count before backup: ${allContacts.size}")
+
+            }
+// Trigger actual DB use before backup
+
+            if (!dbFile.exists()) {
+                Toast.makeText(context, "Database not found", Toast.LENGTH_SHORT).show()
+                return
+            }
+
+            // Log and check file size
+            val dbSize = dbFile.length()
+            Log.d("Backup", "DB Path: ${dbFile.absolutePath}, Size: $dbSize bytes")
+
+            if (dbSize < 1024) {
+                Toast.makeText(context, "Database is too small or empty", Toast.LENGTH_SHORT).show()
+                return
+            }
+
+            // Create a backup file with timestamp
+            val timestamp = System.currentTimeMillis()
+            val backupDir = context.getExternalFilesDir(null)
+            val backupFile = File(backupDir, "Vasool_backup_$timestamp.db")
+
+            // Copy original DB to backup file
+            dbFile.copyTo(backupFile, overwrite = true)
+
+            // Generate URI with FileProvider
+            val uri = FileProvider.getUriForFile(
+                context,
+                "${context.packageName}.provider",
+                backupFile
+            )
+
+            // Create email intent
+            val emailIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "application/octet-stream"
+                putExtra(Intent.EXTRA_SUBJECT, "Vasool DB Backup")
+                putExtra(Intent.EXTRA_TEXT, "Attached is the backup of Vasool.db")
+                putExtra(Intent.EXTRA_STREAM, uri)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+
+            // Launch email chooser
+            context.startActivity(Intent.createChooser(emailIntent, "Send Backup via Email"))
+
+        } catch (e: Exception) {
+            Log.e("Backup", "Failed to share backup", e)
+            Toast.makeText(context, "Failed to share backup", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun validateAndBackupDatabase(context: Context) {
+        val db = AppDatabase.getInstance(context)
+        val lineDao = db.collectionDao()
+        val contactDao = db.contactDao()
+
+        lifecycleScope.launch {
+            val lines = withContext(Dispatchers.IO) { lineDao.getAllLine() }
+
+            Log.d("Backup", "Line rows: ${lines.size}")
+
+            if (lines.isEmpty()) {
+                Toast.makeText(context, "No data to backup", Toast.LENGTH_SHORT).show()
+                return@launch
+            }
+
+            // Wait a moment to ensure Room commits writes
+            delay(300)
+            backupAndDownloadDatabase(context)
+        }
+    }
+
+
+    // Function to backup Room database
+    fun backupRoomDatabase(context: Context) {
+        // Replace 'YourDatabaseName' with your actual Room database class
+        val databaseName = "Vasool"
+
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                try {
+                    // Path to the current Room database file
+                    val currentDBPath = context.getDatabasePath("$databaseName.db")
+
+                    // Directory for storing backup
+                    val backupDir = context.getExternalFilesDir(null)
+//                    if (!backupDir.exists()) {
+//                        backupDir.mkdirs()
+//                    }
+
+                    // Backup file name (can be customized as per your requirement)
+                    val backupFileName = "backup_${System.currentTimeMillis()}.db"
+
+                    // Path to the backup file
+                    val backupDBPath = File(backupDir, backupFileName)
+
+                    // Copying the current database file to the backup location
+                    currentDBPath.copyTo(backupDBPath, overwrite = true)
+
+                    Log.d("BackupRoomDatabase", "Database backed up successfully to: ${backupDBPath.absolutePath}")
+
+                } catch (e: IOException) {
+                    Log.e("BackupRoomDatabase", "Error backing up database: ${e.message}")
+                }
+            }
+        }
+    }
+
+
+    fun backupAndDownloadDatabase(context: Context) {
+        try {
+            lifecycleScope.launch {
+                val db = AppDatabase.getInstance(context)
+
+                AppDatabase.closeDatabase()
+
+                val lineCount = db.collectionDao().getAllLine().size
+
+                Log.d("DB_Content", "Lines: $lineCount")
+            }
+
+            val dbFile = context.getDatabasePath("Vasool.db")
+            if (!dbFile.exists()) {
+                Toast.makeText(context, "Database file not found", Toast.LENGTH_SHORT).show()
+                return
+            }
+
+            val dbSize = dbFile.length()
+            if (dbSize < 1024) {
+                Toast.makeText(context, "Database is too small or empty", Toast.LENGTH_SHORT).show()
+                return
+            }
+
+            // Create backup file in Downloads directory with timestamp
+            val timestamp = System.currentTimeMillis()
+            val backupFileName = "Vasool_backup_$timestamp.db"
+            val downloadsDir = android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_DOWNLOADS)
+            if (!downloadsDir.exists()) downloadsDir.mkdirs()
+            val backupFile = java.io.File(downloadsDir, backupFileName)
+            dbFile.copyTo(backupFile, overwrite = true)
+
+            Toast.makeText(context, "Backup saved to Downloads as $backupFileName", Toast.LENGTH_LONG).show()
+        } catch (e: Exception) {
+            android.util.Log.e("Backup", "Failed to backup database", e)
+            Toast.makeText(context, "Failed to backup database: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+        }
+    }
+
+
+
+    fun restoreDatabaseFromUri(context: Context, uri: Uri): Boolean {
+        return try {
+            AppDatabase.closeDatabase()  // ✅ IMPORTANT
+
+            val dbFile = context.getDatabasePath("Vasool.db")
+
+            context.contentResolver.openInputStream(uri)?.use { input ->
+                dbFile.outputStream().use { output ->
+                    input.copyTo(output)
+                }
+            }
+
+            val restoredSize = dbFile.length()
+            Log.d("Restore", "Restored DB size: $restoredSize")
+
+            restoredSize > 0  // ✅ Return true only if DB file is valid
+        } catch (e: Exception) {
+            Log.e("Restore", "Failed to restore DB", e)
+            false
+        }
+    }
+
+    fun restartApp(context: Context) {
+        val packageManager = context.packageManager
+        val intent = packageManager.getLaunchIntentForPackage(context.packageName)
+        intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        context.startActivity(intent)
+        if (context is Activity) {
+            context.finishAffinity()
+        }
+        Runtime.getRuntime().exit(0)
     }
 
     private fun rateUsClicked()

@@ -1,9 +1,13 @@
 package com.ksp.vasool.base
 
+import android.os.Bundle
 import android.text.TextUtils
 import android.view.MenuItem
+import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.ksp.vasool.MainNavigationActivity
@@ -33,6 +37,18 @@ open class BaseFragment : Fragment()
             mActionBar.setDisplayShowTitleEnabled(false)
         }
         setHasOptionsMenu(true)
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Apply padding for status + nav bars
+        ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
     }
 
     override fun onOptionsItemSelected(item:MenuItem): Boolean {

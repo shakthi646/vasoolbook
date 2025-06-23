@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.viewModels
@@ -17,6 +19,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.PagerAdapter
 import com.ksp.vasool.MainNavigationActivity
 import com.ksp.vasool.R
+import com.ksp.vasool.base.BaseFragment
 import com.ksp.vasool.base.BaseViewModelFactory
 import com.ksp.vasool.constants.SessionVariable
 import com.ksp.vasool.database.AppDatabase
@@ -37,7 +40,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-class DashboardFragment : Fragment() {
+class DashboardFragment : BaseFragment() {
 
     lateinit var mBinding : FragmentDashboardBinding
     private lateinit var collectionViewModel : CollectionViewModel

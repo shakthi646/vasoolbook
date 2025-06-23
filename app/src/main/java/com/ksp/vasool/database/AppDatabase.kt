@@ -31,21 +31,28 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun loanDao():LoanDao
     abstract fun collectionDao() : LineDao
 
-    companion object
-    {
+    companion object {
         private var instance: AppDatabase? = null
 
-        fun getInstance(context:Context): AppDatabase {
+        fun getInstance(context: Context): AppDatabase {
             return instance ?: synchronized(this) {
                 val newInstance = Room.databaseBuilder(
                     context.applicationContext,
-                    AppDatabase::class.java, StringConstants.DB_NAME
-                ).fallbackToDestructiveMigration().build()
+                    AppDatabase::class.java,
+                    StringConstants.DB_NAME
+                ).build()
                 instance = newInstance
                 newInstance
             }
         }
+
+        fun closeDatabase() {
+            instance?.close()
+            instance = null
+        }
     }
 }
+
+
 
 
